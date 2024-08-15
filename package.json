@@ -1,0 +1,21 @@
+{
+  "name": "node-monit-mc",
+  "version": "1.0.5",
+  "description": "A simple Node.js package to monitor requests per second, minute, and hour, and display the data in real-time graphs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "node",
+    "monitoring",
+    "requests",
+    "express",
+    "chart.js"
+  ],
+  "author": "Arjun MC",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

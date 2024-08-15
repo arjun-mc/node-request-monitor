@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Monitor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div id="charts" style="display:flex; justify-content: space-between;">
+        <div style="width: 30%;">
+            <h3 style="text-align: center;">Requests Per Second (Last 60 seconds)</h3>
+            <canvas id="secondChart"></canvas>
+        </div>
+        <div style="width: 30%;">
+            <h3 style="text-align: center;">Requests Per Minute (Last 60 minutes)</h3>
+            <canvas id="minuteChart"></canvas>
+        </div>
+        <div style="width: 30%;">
+            <h3 style="text-align: center;">Requests Per Hour (Last 24 hours)</h3>
+            <canvas id="hourChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const secondCtx = document.getElementById('secondChart').getContext('2d');
+        const minuteCtx = document.getElementById('minuteChart').getContext('2d');
+        const hourCtx = document.getElementById('hourChart').getContext('2d');
+
+        const secondChart = new Chart(secondCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 60 }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Requests Per Second',
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { display: true, title: { display: true, text: 'Time (Seconds)' }},
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        const minuteChart = new Chart(minuteCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 60 }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Requests Per Minute',
+                    data: [],
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { display: true, title: { display: true, text: 'Time (Minutes)' }},
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        const hourChart = new Chart(hourCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 24 }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Requests Per Hour',
+                    data: [],
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { display: true, title: { display: true, text: 'Time (Hours)' }},
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        async function fetchMonitorData() {
+            const response = await fetch('/monitor');
+            const data = await response.json();
+
+            secondChart.data.datasets[0].data = data.secondData;
+            minuteChart.data.datasets[0].data = data.minuteData;
+            hourChart.data.datasets[0].data = data.hourData;
+
+            secondChart.update();
+            minuteChart.update();
+            hourChart.update();
+        }
+        setInterval(fetchMonitorData, 1000);
+    </script>
+</body>
+</html>
