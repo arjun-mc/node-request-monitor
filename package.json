@@ -1,6 +1,6 @@
 {
   "name": "node-monitor-mc",
-  "version": "1.0.5",
+  "version": "1.0.0",
   "description": "A simple Node.js package to monitor requests per second, minute, and hour, and display the data in real-time graphs.",
   "main": "index.js",
   "scripts": {
