@@ -1,5 +1,5 @@
 {
-  "name": "node-monitor-mc",
+  "name": "node-request-monitor",
   "version": "1.0.0",
   "description": "A simple Node.js package to monitor requests per second, minute, and hour, and display the data in real-time graphs.",
   "main": "index.js",
@@ -11,7 +11,8 @@
     "monitoring",
     "requests",
     "express",
-    "chart.js"
+    "chart.js",
+    "mc"
   ],
   "author": "Arjun MC",
   "license": "MIT",
