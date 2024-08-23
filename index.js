@@ -8,6 +8,7 @@ class RequestMonitor {
         this.secondData = [];
         this.minuteData = [];
         this.hourData = [];
+        this.logData=[];
         // this.initializeTime = new Date(); // Capture the time when monitoring starts
         this.initializeMonitoring();
         this.setupRoutes();
@@ -71,10 +72,21 @@ class RequestMonitor {
         this.fillInitialData(); // Fill initial data with zeros
 
         this.app.use((req, res, next) => {
-            if (req.url !== "/monitor" && req.url !== "/monitor-dashboard/") {
-                console.log(req.url,'req.url');
-                
+            if (req.url !== "/monitor" && req.url !== "/api/monitor-dashboard/" && req.url !== "/api/monitor-dashboard") {
                 this.requestCount++;
+                const start = process.hrtime();
+    
+                // On response finish, calculate duration and log details
+                res.on('finish', () => {
+                    const diff = process.hrtime(start);
+                    const duration = (diff[0] * 1e9 + diff[1]) / 1e6; // Convert to milliseconds
+                    var time=new Date().toLocaleString();
+                    var logDetails=`${time} ${req.method} ${req.url} ${res.statusCode} ${duration.toFixed(2)} ms`;
+                    this.logData.push(logDetails);
+                    if(this.logData.length>100){
+                        this.logData.shift()
+                    }
+                });
             }
             next();
         });
@@ -88,10 +100,11 @@ class RequestMonitor {
                 secondData: this.secondData,
                 minuteData: this.minuteData,
                 hourData: this.hourData,
+                logData:this.logData
             });
         });
 
-        this.app.use('/monitor-dashboard', express.static(path.join(__dirname, 'public')));
+        this.app.use('/api/monitor-dashboard', express.static(path.join(__dirname, 'public')));
     }
 }
 

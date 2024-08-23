@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Monitor</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
 
-    <div id="charts" style="display:flex; justify-content: space-between;">
-        <div style="width: 30%;">
-            <h3 style="text-align: center;">Requests Per Second (Last 60 seconds)</h3>
-            <canvas id="secondChart"></canvas>
+<body style="background: #1b2531;
+    height: 100vh;
+    overflow: hidden;">
+    <div id="charts">
+        <div style="display:flex; justify-content: space-between; overflow: none;">
+            <div style="width: 30%; 
+            background: #273143;
+            border-radius: 14px;
+            padding: 5px 10px;">
+                <h3 style="text-align: center; color: white;">Requests Per Second (Last 60 seconds)</h3>
+                <canvas id="secondChart"></canvas>
+            </div>
+            <div style="width: 30%; 
+            background: #273143;
+            border-radius: 14px;
+            padding: 5px 10px;">
+                <h3 style="text-align: center; color: white;">Requests Per Minute (Last 60 minutes)</h3>
+                <canvas id="minuteChart"></canvas>
+            </div>
+            <div style="width: 30%; 
+            background: #273143;
+            border-radius: 14px;
+            padding: 5px 10px;">
+                <h3 style="text-align: center; color: white;">Requests Per Hour (Last 24 hours)</h3>
+                <canvas id="hourChart"></canvas>
+            </div>
         </div>
-        <div style="width: 30%;">
-            <h3 style="text-align: center;">Requests Per Minute (Last 60 minutes)</h3>
-            <canvas id="minuteChart"></canvas>
-        </div>
-        <div style="width: 30%;">
-            <h3 style="text-align: center;">Requests Per Hour (Last 24 hours)</h3>
-            <canvas id="hourChart"></canvas>
+
+        <div id="logContainer"
+            style="margin-top: 20px; background: #273143; border-radius: 14px; padding: 0px 10px 10px 10px; color: white; min-height: 49vh; max-height: 49vh; overflow-y: auto;">
+            <div style="position: fixed; width: 96%; background: #273143;">
+                <h3>Request Status Logger</h3>
+            </div>
+            <ul id="logList" style="list-style-type: none; padding: 0; margin-top: 57px;"></ul>
         </div>
     </div>
 
@@ -42,11 +64,34 @@
             },
             options: {
                 scales: {
-                    x: { display: true, title: { display: true, text: 'Time (Seconds)' }},
-                    y: { beginAtZero: true }
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Time (Seconds)',
+                            color: '#c7c3c3'
+                        },
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#c7c3c3'
+                        }
+                    }
                 }
             }
         });
+
 
         const minuteChart = new Chart(minuteCtx, {
             type: 'line',
@@ -62,8 +107,30 @@
             },
             options: {
                 scales: {
-                    x: { display: true, title: { display: true, text: 'Time (Minutes)' }},
-                    y: { beginAtZero: true }
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Time (Minutes)',
+                            color: '#c7c3c3'
+                        },
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#c7c3c3'
+                        }
+                    }
                 }
             }
         });
@@ -82,8 +149,30 @@
             },
             options: {
                 scales: {
-                    x: { display: true, title: { display: true, text: 'Time (Hours)' }},
-                    y: { beginAtZero: true }
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Time (Hours)',
+                            color: '#c7c3c3'
+                        },
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#c7c3c3'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#c7c3c3'
+                        }
+                    }
                 }
             }
         });
@@ -99,8 +188,26 @@
             secondChart.update();
             minuteChart.update();
             hourChart.update();
+            const logContainer = document.getElementById('logList');
+            logContainer.innerHTML = ''; // Clear existing log entries
+            data.logData.forEach(log => {
+                const logEntry = document.createElement('li');
+                logEntry.textContent = log;
+                const statusCode = log.split(' ')[5];
+                if (statusCode >= 200 && statusCode < 300) {
+                    logEntry.style.color = 'green'; // 200 series
+                } else if (statusCode >= 300 && statusCode < 400) {
+                    logEntry.style.color = 'yellow'; // 300 series
+                } else if (statusCode >= 400 && statusCode < 500) {
+                    logEntry.style.color = 'orange'; // 400 series
+                } else if (statusCode >= 500) {
+                    logEntry.style.color = 'red'; // 500 series
+                }
+                logContainer.appendChild(logEntry);
+            });
         }
         setInterval(fetchMonitorData, 1000);
     </script>
 </body>
+
 </html>
