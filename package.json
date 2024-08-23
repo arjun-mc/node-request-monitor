@@ -1,6 +1,6 @@
 {
   "name": "node-request-monitor",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple Node.js package to monitor requests per second, minute, and hour, and display the data in real-time graphs.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arjun-mc/node-monit-mc"
+    "url": "git+https://github.com/arjun-mc/node-request-monitor"
   }
 }

@@ -7,7 +7,7 @@ Node Request Monitor is a lightweight Node.js package designed for monitoring HT
 Use the package manager [npm](https://www.npmjs.com/package/node-request-monitor) to install Node Request Monitor.
 
 ```bash
-npm install Node Request Monitor
+npm install node-request-monitor
 ```
 
 ## Usage
