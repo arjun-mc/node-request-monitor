@@ -1,6 +1,6 @@
 # Node Request Monitor
 
-Node Request Monitor is a lightweight Node.js package designed for monitoring HTTP requests in your application. It displays real-time charts for requests per second, minute, and hour, and shows log data with color-coded HTTP status codes directly in a web page.
+Node Request Monitor is a lightweight Node.js package designed for monitoring HTTP requests in your application. It displays real-time charts for requests per second, minute, and hour, and shows log data with color-coded HTTP status codes directly in a web dashboard page.
 
 ## Installation
 
