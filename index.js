@@ -72,7 +72,7 @@ class RequestMonitor {
         this.fillInitialData(); // Fill initial data with zeros
 
         this.app.use((req, res, next) => {
-            if (req.url !== "/monitor" && req.url !== "/api/monitor-dashboard/" && req.url !== "/api/monitor-dashboard") {
+            if (req.url !== "/api/monitor" && req.url !== "/api/monitor-dashboard/" && req.url !== "/api/monitor-dashboard") {
                 this.requestCount++;
                 const start = process.hrtime();
     
